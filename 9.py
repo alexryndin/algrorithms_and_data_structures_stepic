@@ -8,9 +8,8 @@ class DSU:
         self.rows = rows
         self.rank = 0
 
-    def union(i, j):
-        rows = 0
-        ir = i.root()
+    def union(self, j):
+        ir = self.root()
         jr = j.root()
         if ir != jr:
             if ir.rank < jr.rank:
@@ -23,10 +22,8 @@ class DSU:
                 rows = ir.rows
                 if ir.rank == jr.rank:
                     jr.rank += 1
-                i, j = j, i
+                self = j
 
-
-        return (i, j, rows) if rows != 0 else (i, j, ir.rows)
 
     def root(self):
         if not self.parent:
@@ -41,17 +38,19 @@ def main():
     n, e, d = list(map(int, input().split(" ")))
     data = []
     _max = 0
-    for rows in map(int, input().split(" ")):
-        data.append(DSU(rows))
-        if rows > _max:
-            _max = rows
+    for n in range(n):
+        data.append(DSU(n))
 
-    for i in range(m):
+    for i in range(e):
         i, j = tuple(map(int, input().split(" ")))
-        data[i-1], data[j-1], rows = DSU.union(data[i-1], data[j-1])
-        _max = max(rows, _max)
-        print(_max)
+        data[i-1].union(data[j-1])
 
+    for i in range(d):
+        i, j = tuple(map(int, input().split(" ")))
+        if data[i-1].root() == data[j-1].root():
+            print(0)
+            return
+    print(1)
 
 
 if __name__ == "__main__":
