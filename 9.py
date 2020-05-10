@@ -1,6 +1,5 @@
 #!/bin/python
 
-from array import array
 
 class DSU:
     def __init__(self, rows):
